@@ -23,14 +23,14 @@ export function HeroBackground({
   }, [images.length]);
 
   return (
-    <div className="absolute inset-0">
-      <AnimatePresence>
+    <div className="absolute inset-0 overflow-hidden">
+      <AnimatePresence initial={false}>
         <motion.div
           key={images[i]}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          initial={{ x: "100%" }}
+          animate={{ x: "0%" }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
           className="absolute inset-0"
         >
           <Image

@@ -147,16 +147,13 @@ export default function Home() {
                 className="mx-auto h-auto w-36 sm:w-48"
               />
             </Reveal>
-            <Reveal delay={0.1}>
-              <p className="display-en mt-6 text-[11px] tracking-[0.3em] text-white/60">
-                {site.tagline}
-              </p>
-            </Reveal>
-            <Reveal delay={0.18}>
-              <h1 className="fluid-hero mt-6">
-                鍛える、整える、
-                <br className="sm:hidden" />
-                続けられる。
+            <Reveal delay={0.15}>
+              <h1 className="fluid-hero heading-ja mt-8">
+                あなたが思い描く
+                <br />
+                理想の自分を
+                <br />
+                実現する場所
               </h1>
             </Reveal>
             <Reveal delay={0.22}>
@@ -185,8 +182,8 @@ export default function Home() {
             </Reveal>
           </div>
 
-          {/* スクロールインジケータ */}
-          <div className="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 md:bottom-10">
+          {/* スクロールインジケータ（PCのみ。モバイルは固定CTAと干渉するため非表示） */}
+          <div className="absolute bottom-10 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex">
             <span className="display-en text-[10px] tracking-[0.4em] text-white/50">
               SCROLL
             </span>
