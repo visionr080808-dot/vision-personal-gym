@@ -4,7 +4,7 @@
 
 岡山県苫田郡鏡野町の完全マンツーマン・パーソナルジム「VISION Personal Gym」の
 公式サイト（1ページ完結LP）。正式な受注制作物。
-※店名は 2026-07 に「VISION」で正式決定（旧仮名: STUDIO YU。リポジトリ名・URLは旧名のまま）。
+※店名は 2026-07 に「VISION」で正式決定（旧仮名: STUDIO YU。ローカルのディレクトリ名は旧名のまま）。
 
 ---
 
@@ -12,26 +12,39 @@
 
 | 項目 | 内容 |
 |------|------|
-| **本番URL（現行）** | **https://vision-personal-gym.vercel.app** |
-| Vercel scope（現行） | **vision888**（アカウント: visionr080808-1799 / vision.r080808@gmail.com） |
+| **本番URL** | **https://vision-personal-gym.vercel.app** |
+| **GitHub（現行）** | **https://github.com/visionr080808-dot/vision-personal-gym** |
+| Vercel scope | **vision888**（アカウント: visionr080808-1799 / vision.r080808@gmail.com） |
 | Vercelプロジェクト名 | vision-personal-gym |
-| GitHub（コード管理は引き続きこちら） | https://github.com/shimacraft8/portfolio-studio-yu |
-| ローカル | `/Users/hiroshikento/Documents/portfolio-studio-yu`（SHIMA CRAFT の隣・別リポジトリ） |
+| GitHubアカウント | visionr080808-dot（vision.r080808@gmail.com 系） |
+| ローカル | `/Users/hiroshikento/Documents/portfolio-studio-yu`（SHIMA CRAFT の隣・別リポジトリ、フォルダ名・git remote名は旧名のまま） |
 
-※2026-07-23、Vercelを shimacraft8-6355s-projects から **vision888**（新アカウント）へ移行。
-デプロイは `vercel --prod --yes --scope vision888` のCLI手動デプロイ運用（**GitHub連携は未接続**。
-vision888アカウントは shimacraft8/portfolio-studio-yu リポジトリへの書き込み権限がなく連携不可のため。
-GitHub側もvision888管理の新リポジトリへ移す場合は要別途対応）。
-※旧URL（shimacraft8アカウント側）: https://portfolio-studio-yu-pied.vercel.app は残存しているが今後更新しない。
+※2026-07-23、GitHub・VercelともにVision側の新アカウントへ完全移行済み。
+旧shimacraft8側（GitHub: shimacraft8/portfolio-studio-yu、Vercel: shimacraft8-6355s-projects /
+portfolio-studio-yu-pied.vercel.app）は履歴として残存するが、**今後の開発・デプロイ対象ではない**。
 ※独自ドメインは取得後に接続予定。現状は vercel.app のまま。
 
-### Vercel移行の経緯（重要）
-2026-07-23、ローカルのVercel CLIが別作業（takeyama/amami-taiken-npo用のmangroveアカウント）に
-ログイン状態を奪われていたため、`vercel login` で再認証を試みたところ、Mac上のブラウザに
-残っていた **vision.r080808@gmail.com のログインセッション**が自動的にdevice-flow認証を通過し、
-Vercelアカウント "vision888" に接続された。このアカウントは空（プロジェクト0件）だったため、
-ユーザー確認の上でこのアカウントに正式移行し、現在のコードをデプロイした。
-**パスワードの直接入力は一切行っていない**（ブラウザの既存セッションを踏襲しただけ）。
+### 移行の経緯（重要）
+2026-07-23、以下の手順で shimacraft8 → Vision（新アカウント）への完全移行を実施：
+
+1. **Vercel**: ローカルCLIの再認証時、Macブラウザに残っていた vision.r080808@gmail.com の
+   既存ログインセッションが自動的にdevice-flow認証を通過し、Vercelアカウント "vision888" に
+   接続された（プロジェクト0件の新規アカウント）。ユーザー確認の上でこのアカウントに正式移行し、
+   `vercel --prod --yes --scope vision888` でデプロイ。
+2. **GitHub**: GitHubのdevice-flow認証は自動承認されない仕様のため、ユーザー自身に
+   ワンタイムコードをブラウザで入力・承認していただき、`visionr080808-dot` アカウントでCLIログイン。
+   その後 `gh repo create visionr080808-dot/vision-personal-gym` で新規リポジトリを作成し、
+   ローカルの `origin` をそちらに向けて全コミット履歴ごと push。
+
+**いずれの手順でもパスワードの直接入力は一切行っていない**（Vercelはブラウザの既存セッション、
+GitHubはユーザー自身によるワンタイムコード承認）。
+
+### 残タスク: Vercel⇄GitHubの自動デプロイ連携（未完了）
+`vercel git connect` を試みたが、"Failed to connect... make sure you have access" のエラーで
+失敗した。原因はおそらく **Vercelの GitHub App が visionr080808-dot アカウント側でまだ
+インストール/認可されていない**ため。現状はCLI手動デプロイのみで運用しており、
+push しても自動デプロイはされない。自動化したい場合は、Vercelダッシュボード
+（Project Settings → Git → Connect Git Repository）からご自身で認可を通していただく必要がある。
 
 ---
 
@@ -165,11 +178,11 @@ npm run dev -- -p 3210      # http://localhost:3210
 # ビルド確認
 npm run build
 
-# デプロイ（本番・現行はvision888アカウント、GitHub連携なしのため手動デプロイのみ）
-vercel --prod --yes --scope vision888
-
-# コード管理は引き続きshimacraft8のGitHubに push
+# コード管理: visionr080808-dot の GitHub に push
 git add -A && git commit -m "..." && git push origin main
+
+# デプロイ（本番・vision888アカウント、GitHub自動連携は未設定のため手動）
+vercel --prod --yes --scope vision888
 ```
 
 ---
@@ -185,14 +198,17 @@ git add -A && git commit -m "..." && git push origin main
 
 ## 10. 未対応・申し送り事項
 
-- **GitHubは今もshimacraft8所有のまま**（vision888アカウントには書き込み権限がなく連携不可）。
-  完全にvision888側へ一本化したい場合は、vision888のGitHubアカウントを用意し、リポジトリを
-  移管（fork/転送）した上でVercel連携をやり直す必要がある。現状は「コードはshimacraft8の
-  GitHub、本番デプロイはvision888のVercel」という分離運用。
-- デプロイはCLI手動（`vercel --prod --yes --scope vision888`）。GitHub連携がないため
-  push しても自動デプロイされない。変更を公開する際は毎回手動デプロイを忘れずに。
-- 旧デプロイ（shimacraft8アカウント側 `portfolio-studio-yu-pied.vercel.app`）は残存。
-  今後更新しないなら、不要な時点でVercelダッシュボードから削除してよい。
+- **GitHub・Vercelともにvisionアカウントへ移行完了**（GitHub: visionr080808-dot、
+  Vercel: vision888）。旧shimacraft8側のリポジトリ・Vercelプロジェクトは履歴として残存のみ。
+- **Vercel⇄GitHubの自動デプロイ連携は未完了**（`vercel git connect` が権限エラーで失敗。
+  おそらくVercel GitHub Appがvisionr080808-dotアカウントに未インストール）。
+  現状はpushしても自動デプロイされないため、**変更を公開する際は毎回
+  `vercel --prod --yes --scope vision888` の手動デプロイが必要**。
+  自動化するには、Vercelダッシュボード（vision888でログイン）→ Project Settings → Git →
+  Connect Git Repository から visionr080808-dot/vision-personal-gym を選び、
+  GitHub App の認可を通していただく必要がある（ブラウザでの手動承認が必要なため未実施）。
+- 旧shimacraft8側のデプロイ（`portfolio-studio-yu-pied.vercel.app`）・リポジトリは
+  不要であれば後日削除してよい。
 - 独自ドメインは未接続（現状 vercel.app のまま）。取得後にVercelで接続。
 - 正式オープン日・セミパーソナル8回の単価表記（4,350 vs 4,375）は戸田さんに要確認。
 
