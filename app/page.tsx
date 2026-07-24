@@ -18,6 +18,7 @@ import { Faq } from "@/src/components/Faq";
 import { HeroBackground } from "@/src/components/HeroBackground";
 import { SectionHead } from "@/src/components/SectionHead";
 import { BtnFill, BtnLine } from "@/src/components/Buttons";
+import { ContactForm } from "@/src/components/ContactForm";
 
 export default function Home() {
   return (
@@ -493,6 +494,15 @@ export default function Home() {
                 >
                   INSTAGRAM {site.instagramHandle}
                 </a>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.25}>
+              <div className="mt-16 border-t border-white/15 pt-16">
+                <p className="display-en rule-label text-center text-[11px] uppercase text-white/45">
+                  Contact Form
+                </p>
+                <ContactForm />
               </div>
             </Reveal>
           </div>

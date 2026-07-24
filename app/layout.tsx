@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   description: site.description,
   keywords: [
     "VISION",
-    "VISION Personal Gym",
+    "Personal Gym VISION",
     "パーソナルジム",
     "鏡野町",
     "岡山",
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
     title: `${site.fullName} | 岡山県苫田郡鏡野町のパーソナルジム`,
     description: site.description,
     siteName: site.fullName,
-    images: [{ url: "/images/gym-interior.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/images/hero-5.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.fullName} | 岡山県苫田郡鏡野町のパーソナルジム`,
     description: site.description,
-    images: ["/images/gym-interior.jpg"],
+    images: ["/images/hero-5.jpg"],
   },
   robots: { index: true, follow: true },
 };

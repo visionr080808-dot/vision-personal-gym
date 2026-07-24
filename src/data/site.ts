@@ -6,8 +6,8 @@
 export const site = {
   // --- 店舗基本情報 -------------------------------------------------
   name: "VISION", // 正式決定（2026-07 戸田さんより）
-  fullName: "VISION Personal Gym",
-  nameJa: "ヴィジョン パーソナルジム",
+  fullName: "Personal Gym VISION",
+  nameJa: "パーソナルジム ヴィジョン",
   tagline: "あなたが思い描く理想の自分を実現する場所", // 2026-07-23 戸田さん指定・ヒーローのメイン見出し
   description:
     "岡山県苫田郡鏡野町の完全マンツーマン・パーソナルジム。トレーナーは1名、自宅を改装したプライベート空間。ボディメイク・ダイエット・姿勢改善・痛みケアまで、一人ひとりに合わせて伴走します。",
@@ -137,23 +137,6 @@ export const priceGroups: PriceGroup[] = [
       { name: "8回", per: "6,000", total: "48,000" },
       { name: "16回", per: "5,750", total: "90,000" },
       { name: "24回", per: "5,500", total: "132,000" },
-    ],
-  },
-  {
-    name: "月額コース",
-    en: "MONTHLY",
-    note: "毎月自動引落",
-    for: ["習慣にして続けたい方", "定期的にしっかり取り組みたい方"],
-    totalLabel: "月額",
-    plans: [
-      {
-        name: "月4回コース",
-        per: "5,500",
-        total: "22,000",
-        recommended: true,
-        reason: "週1回の習慣づくりにちょうど良いペース",
-      },
-      { name: "月8回コース", per: "5,000", total: "40,000" },
     ],
   },
   {

@@ -12,7 +12,7 @@ export function StructuredData() {
     url: siteUrl,
     telephone: site.tel,
     email: site.email,
-    image: `${siteUrl}/images/gym-interior.jpg`,
+    image: `${siteUrl}/images/hero-5.jpg`,
     logo: `${siteUrl}/images/logo.jpg`,
     priceRange: site.priceRange,
     address: {
