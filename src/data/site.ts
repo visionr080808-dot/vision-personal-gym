@@ -129,14 +129,15 @@ export const priceGroups: PriceGroup[] = [
   {
     name: "回数券",
     en: "TICKET",
-    note: "",
+    note: "60分",
     for: ["自分のペースで通いたい方", "まずは気軽に始めたい方"],
     totalLabel: "合計",
     plans: [
-      { name: "4回", per: "6,250", total: "25,000" },
-      { name: "8回", per: "6,000", total: "48,000" },
-      { name: "16回", per: "5,750", total: "90,000" },
-      { name: "24回", per: "5,500", total: "132,000" },
+      { name: "1回", per: "7,000", total: "7,000" },
+      { name: "4回", per: "6,750", total: "27,000" },
+      { name: "8回", per: "6,500", total: "52,000" },
+      { name: "16回", per: "6,250", total: "84,000" },
+      { name: "24回", per: "6,000", total: "144,000" },
     ],
   },
   {

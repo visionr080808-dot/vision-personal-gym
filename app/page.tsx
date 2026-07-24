@@ -303,7 +303,9 @@ export default function Home() {
 
                   <div
                     className={`mt-8 grid grid-cols-2 gap-px bg-line ${
-                      g.plans.length >= 4
+                      g.plans.length >= 5
+                        ? "md:grid-cols-5"
+                        : g.plans.length === 4
                         ? "md:grid-cols-4"
                         : "md:mx-auto md:max-w-2xl md:grid-cols-2"
                     }`}
