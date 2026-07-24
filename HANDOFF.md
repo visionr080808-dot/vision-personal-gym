@@ -79,13 +79,14 @@ portfolio-studio-yu/
 ├── app/
 │   ├── layout.tsx        # Metadata/OGP・フォント・StructuredData/Analytics読込
 │   ├── page.tsx          # 全セクションを組み立てるメインページ（LP）
-│   ├── results/page.tsx  # 実績ページ（お客様のBefore/After。microCMSから取得、新設）
+│   ├── results/page.tsx  # 実績ページ（お客様のBefore/After。microCMSから取得）
+│   ├── trainer/page.tsx  # トレーナー詳細ページ（経歴・資格・競技歴。microCMSから取得、新設）
 │   ├── globals.css       # 配色・流体タイポ・reduced-motion対応
 │   ├── sitemap.ts        # 自動生成
 │   └── robots.ts         # 自動生成
 ├── src/
 │   ├── data/site.ts      # ★全文言の一元管理（差し替えはここ）
-│   ├── lib/microcms.ts   # 実績ページ用データ取得（microCMS REST APIをクライアント側fetch）
+│   ├── lib/microcms.ts   # results/achievements 用データ取得（microCMS REST APIをクライアント側fetch）
 │   └── components/
 │       ├── Header.tsx          # グラスモーフィズム・スクロールで文字色切替
 │       ├── MobileCTA.tsx       # スマホ下部固定CTA（電話/Instagram）
@@ -113,9 +114,15 @@ portfolio-studio-yu/
 
 ## 4. ページ構成
 
-Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Trainer（トレーナー紹介）
-→ Menu（5項目の簡易リスト）→ Price（キャンペーンバナー＋回数券/月額/セミパーソナルの3グループ）
-→ Voice（お客様の声）→ Access/FAQ → Contact → Footer
+**トップページ（`/`）**: Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→
+Trainer（トレーナー紹介の抜粋＋「経歴・実績をもっと見る」で`/trainer`へ）→
+Menu（5項目の簡易リスト）→ Price（キャンペーンバナー＋回数券/月額/セミパーソナルの3グループ）→
+Voice（お客様の声）→ Access/FAQ → Contact → Footer
+
+**独立ページ**:
+- `/results` — お客様の実績（Before/After）。microCMS「results」APIから取得
+- `/trainer` — トレーナー詳細（プロフィール＋競技歴・資格・学歴一覧）。
+  microCMS「achievements」APIから取得し、カテゴリごとにグルーピング表示
 
 ---
 
@@ -188,8 +195,8 @@ Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Tr
 |------|------|------|
 | NEXT_PUBLIC_SITE_URL | 本番URL（OGP/sitemap/構造化データ、ビルド時に静的ページへ埋め込み） | `https://vision-personal-gym.pages.dev`（**独自ドメイン接続後に要更新・再ビルド・再デプロイ**） |
 | NEXT_PUBLIC_GA_ID | GA4測定ID | 未設定（設定すると自動で計測開始） |
-| NEXT_PUBLIC_MICROCMS_SERVICE_DOMAIN | 実績ページ用microCMSのサービスID | **未設定**（microCMS契約後に設定。「11. 実績ページ」参照） |
-| NEXT_PUBLIC_MICROCMS_API_KEY | 同APIキー（読み取り専用） | **未設定** |
+| NEXT_PUBLIC_MICROCMS_SERVICE_DOMAIN | microCMSのサービスID | 設定済み（`ah4kq0x0c7`） |
+| NEXT_PUBLIC_MICROCMS_API_KEY | 同APIキー（読み取り専用） | 設定済み |
 
 ※静的書き出し（`output: "export"`）のため、`NEXT_PUBLIC_*` はビルド時にHTMLへ焼き込まれる。
 値を変える際は必ず `npm run build` → 再デプロイが必要（実行時に切り替わるものではない）。
@@ -250,46 +257,58 @@ wranglerが未ログインの場合は先に `npx wrangler login`（vision.r0808
   5. 再ビルド・再デプロイ
 - **Google Workspace（メール）は未契約**（`info@pt-vision.com` 用に検討中。契約後、
   DNS側にMX/SPF/DKIMレコードの追加が必要）。
-- **実績ページ（/results）のmicroCMS連携がまだ未設定**（アカウント未作成・APIキー未取得）。
-  設定手順は「11. 実績ページ（microCMS連携）」を参照。設定するまでは
-  「準備中です」というプレースホルダー文言が表示される（壊れてはいない）。
+- **microCMSサービス作成・環境変数の設定は完了済み**（サービスID `ah4kq0x0c7`）。
+  ただし **microCMS側の「results」「achievements」APIの作成（フィールド設定）はまだ**
+  （2026-07-24時点）。API作成前は各ページで「準備中です」と表示される（壊れてはいない）。
+  作成手順は「11. 実績ページ・トレーナー経歴ページ（microCMS連携）」を参照。
 - 旧Vercel環境（vision888スコープ、`vision-personal-gym.vercel.app`）・
   旧shimacraft8側のGitHub/Vercelは履歴として残存。不要であれば後日削除してよい。
 - 正式オープン日・セミパーソナル8回の単価表記（4,350 vs 4,375）は戸田さんに要確認。
 
 ---
 
-## 11. 実績ページ（microCMS連携）
+## 11. 実績ページ・トレーナー経歴ページ（microCMS連携）
 
-2026-07-24追加。「お客様の実績（Before/After）」を、**戸田さんがコードやGitHubを一切触らずに
-自分で更新できる**ようにするため、ヘッドレスCMS「microCMS」と連携する専用ページ
-（`/results`）を新設した。
+2026-07-24追加。以下の2つを、**戸田さんがコードやGitHubを一切触らずに自分で更新できる**
+ようにするため、ヘッドレスCMS「microCMS」と連携する専用ページを新設した。
+
+| ページ | 内容 | microCMS API名 |
+|---|---|---|
+| `/results` | お客様の実績（Before/After写真＋コメント） | `results` |
+| `/trainer` | トレーナーの競技歴・資格・学歴・スポーツ経歴一覧 | `achievements` |
+  （2026-07-24、戸田さんのLINEでの提案「野球選手名図鑑チックにトレーナーとして載せて、
+  その下に競技歴とか」を反映して追加）
 
 ### 仕組み
 - サイト本体は今も完全な静的サイト（Cloudflare Pages）のまま
-- `/results` ページだけは**ブラウザ側で直接microCMSのAPIを呼び出して**内容を表示する
-  （`src/lib/microcms.ts` の `fetchResults()`）
+- 上記2ページだけは**ブラウザ側で直接microCMSのAPIを呼び出して**内容を表示する
+  （`src/lib/microcms.ts` の `fetchResults()` / `fetchAchievements()`）
 - そのため、**戸田さんがmicroCMSの管理画面で「公開」ボタンを押した瞬間に、
   サイトの再ビルド・再デプロイなしでそのまま反映される**
-- microCMS未設定の間は、環境変数が空なので「準備中です」と表示されるだけで、
-  ビルドエラーにはならない安全設計
+- API未作成の間は「準備中です」と表示されるだけで、ビルドエラーにはならない安全設計
 
 ### セキュリティ上の注意（要認識）
 `NEXT_PUBLIC_MICROCMS_API_KEY` はブラウザ側で使う都合上、**サイトのソースコードに
 公開される**（読み取り専用キーであっても、誰でも閲覧はできる状態になる）。
-実績データは元々公開情報なので実害は小さいが、他人がこのキーで大量にAPIを叩くと
+掲載データは元々公開情報なので実害は小さいが、他人がこのキーで大量にAPIを叩くと
 microCMSの無料枠の呼び出し上限を消費される可能性はゼロではない。
 より厳密に隠したい場合は、GitHub⇄Cloudflare Pagesの自動デプロイ連携を設定した上で、
 microCMSの「Webhook」→ Cloudflare Pagesの「Deploy Hook」経由でビルド時取得に変更する
 方式に切り替えることもできる（この場合、更新反映に数分のビルド時間がかかるようになる）。
 
-### 戸田さんによるmicroCMSセットアップ手順（アカウント作成が必要なため要本人対応）
+### 現在の設定状況（2026-07-24時点）
+- microCMSサービス作成済み：サービスID **`ah4kq0x0c7`**（サービス名 vision-gym）
+- `.env.production` に `NEXT_PUBLIC_MICROCMS_SERVICE_DOMAIN` / `NEXT_PUBLIC_MICROCMS_API_KEY`
+  を設定済み・本番デプロイ済み
+- **`results` / `achievements` の2つのAPI自体（フィールド定義）はまだ未作成**
+  （`curl`で確認したところ404。サービスは作られたがAPIがまだ、という状態）
+  → 以下の手順で戸田さんに作成していただく必要がある
 
-1. https://microcms.io/ で無料アカウントを作成（メール+パスワード、またはGoogleログイン）
-2. 新しい「サービス」を作成（サービスID例: `vision-gym`。これがそのまま
-   `〇〇.microcms.io` のサブドメインになる）
-3. 「API作成」→ 種類は **リスト形式** → API名（エンドポイント）を **`results`** にする
-4. 以下のフィールドを追加：
+### 戸田さんによるAPI作成手順
+
+#### ① 実績ページ用「results」API
+1. microCMS管理画面 → 「API作成」→ 種類は **リスト形式** → API名（エンドポイント）を **`results`**
+2. フィールドを追加：
 
    | フィールドID | 表示名 | 種類 |
    |---|---|---|
@@ -300,20 +319,24 @@ microCMSの「Webhook」→ Cloudflare Pagesの「Deploy Hook」経由でビル�
    | afterImage | After画像 | 画像 |
    | comment | お客様の声 | テキストエリア |
 
-5. 左メニュー「API設定」→「APIキー」から、**GET（読み取り専用）のAPIキー**をコピー
-6. サービスID（例: `vision-gym`）とAPIキーの2つを私に共有してください
+#### ② トレーナー経歴ページ用「achievements」API
+1. 同様に「API作成」→ リスト形式 → API名を **`achievements`**
+2. フィールドを追加：
 
-これを受け取ったら、`.env.production` に以下を追加し、再ビルド・再デプロイします：
+   | フィールドID | 表示名 | 種類 |
+   |---|---|---|
+   | title | 内容（例: 第10回〇〇コンテスト メンズフィジーク優勝） | テキストフィールド |
+   | category | カテゴリ | セレクトフィールド（選択肢: 大会実績 / スポーツ経歴 / 資格 / 学歴） |
+   | year | 年 | テキストフィールド（例: 2024） |
+   | description | 補足説明 | テキストエリア（任意） |
 
-```
-NEXT_PUBLIC_MICROCMS_SERVICE_DOMAIN=（サービスID）
-NEXT_PUBLIC_MICROCMS_API_KEY=（APIキー）
-```
+APIキー自体は共通（サービス単位）なので、既にいただいたキーがそのまま両方のAPIで使える。
+何か変更があれば教えてください。
 
-### 戸田さんの日常運用（セットアップ後）
-1. microCMSにログイン → 「results」→「コンテンツを追加」
-2. お名前・カテゴリ・期間・Before/After画像・お客様の声を入力
-3. 「公開」ボタンを押す → その場でサイトの `/results` ページに反映（再デプロイ不要）
+### 戸田さんの日常運用（API作成後）
+1. microCMSにログイン → 「results」または「achievements」→「コンテンツを追加」
+2. 必要項目を入力
+3. 「公開」ボタンを押す → その場でサイトに反映（再デプロイ不要）
 
 ---
 

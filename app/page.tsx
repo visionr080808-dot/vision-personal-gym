@@ -187,6 +187,10 @@ export default function Home() {
                   </p>
                 ))}
               </div>
+
+              <div className="mt-8">
+                <BtnLine href="/trainer">経歴・実績をもっと見る</BtnLine>
+              </div>
             </Reveal>
           </div>
         </section>
