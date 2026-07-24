@@ -1,7 +1,7 @@
 import { site, priceGroups } from "@/src/data/site";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-studio-yu-pied.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pt-vision.com";
 
 export function StructuredData() {
   const data = {

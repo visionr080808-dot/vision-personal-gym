@@ -20,7 +20,7 @@ const noto = Noto_Sans_JP({
 });
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-studio-yu-pied.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pt-vision.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

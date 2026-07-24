@@ -12,13 +12,16 @@
 
 | 項目 | 内容 |
 |------|------|
-| **本番URL（現行・Cloudflare Pages）** | **https://vision-personal-gym.pages.dev** |
+| **本番URL（独自ドメイン・正式）** | **https://pt-vision.com** |
+| Cloudflare Pages既定URL（サブURL・引き続き有効） | https://vision-personal-gym.pages.dev |
 | **GitHub** | **https://github.com/visionr080808-dot/vision-personal-gym** |
 | Cloudflareアカウント | vision.r080808@gmail.com（Account ID: ffa3bed80e0d8ec8e317b0ab311ec0fd） |
 | Cloudflare Pagesプロジェクト名 | vision-personal-gym |
 | GitHubアカウント | visionr080808-dot（vision.r080808@gmail.com 系） |
 | ローカル | `/Users/hiroshikento/Documents/portfolio-studio-yu`（SHIMA CRAFT の隣・別リポジトリ、フォルダ名・git remote名は旧名のまま） |
-| 独自ドメイン | `pt-vision.com`（お名前.comで取得手続き中。接続後に本項目・NEXT_PUBLIC_SITE_URLを更新） |
+| 独自ドメイン | `pt-vision.com`（2026-07-24 お名前.comで取得完了。ネームサーバーをCloudflareに変更し
+  Custom domainsへ追加済み。DNS反映待ち〜完了） |
+| 連絡先メール | `info@pt-vision.com`（Google Workspace設定中。詳細は「12. ドメイン接続・Google Workspace」参照） |
 
 **旧ホスティング（Vercel）は2026-07-24付けで運用終了・Cloudflare Pagesへ完全移行済み。**
 理由: Vercelの無料"Hobby"プランは商用利用不可の規約のため、Proプラン（$20/月）が必要になる想定だったが、
@@ -241,22 +244,19 @@ wranglerが未ログインの場合は先に `npx wrangler login`（vision.r0808
 ## 10. 未対応・申し送り事項
 
 - **ホスティングは2026-07-24にVercelからCloudflare Pagesへ完全移行済み**
-  （静的書き出し化 + 無料・商用利用可のため）。現行の本番URLは
-  `https://vision-personal-gym.pages.dev`。
+  （静的書き出し化 + 無料・商用利用可のため）。
+- **独自ドメイン `pt-vision.com` は2026-07-24に取得完了・Cloudflareに接続済み**
+  （ネームサーバーをCloudflareに変更、Custom domainsに追加、コード側のURL/メールも更新・
+  再デプロイ済み）。DNS反映のタイムラグで実際に見えるようになるまで数分〜数時間かかる場合がある。
+  詳細な作業ログは「12. ドメイン接続・Google Workspace」参照。
+- **Google Workspace（メール）は契約手続き中**（`info@pt-vision.com`）。ユーザー名作成まで進行。
+  契約完了後、CloudflareのDNSにMX/SPF/DKIMレコードを追加する必要がある（未実施）。
+  それまでは `info@pt-vision.com` 宛のメールは届かない点に注意（サイト上の表記自体は変更済み）。
 - **GitHub⇄Cloudflare Pagesの自動デプロイ連携は未設定**。現状は
   `npx wrangler pages deploy out ...` の手動デプロイのみ。自動化したい場合は、
   Cloudflareダッシュボード（vision.r080808@gmail.comでログイン）→ Workers & Pages →
   vision-personal-gym → Settings → Builds & deployments から
   `visionr080808-dot/vision-personal-gym` のGitHub連携を設定する（ブラウザでの手動承認が必要）。
-- **独自ドメイン `pt-vision.com` を お名前.com で取得手続き中**（2026-07-24時点、購入完了報告待ち）。
-  取得完了後の手順：
-  1. Cloudflareダッシュボードでカスタムドメインとして追加（または「Add Existing」）
-  2. 表示されるA/CNAMEレコードをお名前.comのDNS設定に追加
-  3. `.env.production` の `NEXT_PUBLIC_SITE_URL` を `https://pt-vision.com` に更新
-  4. `src/data/site.ts` の `email` を `info@pt-vision.com` に更新（現状は仮の yu.fit.jp@gmail.com）
-  5. 再ビルド・再デプロイ
-- **Google Workspace（メール）は未契約**（`info@pt-vision.com` 用に検討中。契約後、
-  DNS側にMX/SPF/DKIMレコードの追加が必要）。
 - **microCMSサービス作成・環境変数の設定は完了済み**（サービスID `ah4kq0x0c7`）。
   ただし **microCMS側の「results」「achievements」APIの作成（フィールド設定）はまだ**
   （2026-07-24時点）。API作成前は各ページで「準備中です」と表示される（壊れてはいない）。
@@ -340,7 +340,34 @@ APIキー自体は共通（サービス単位）なので、既にいただい�
 
 ---
 
-## 12. コミット履歴
+## 12. ドメイン接続・Google Workspace
+
+### ドメイン接続（2026-07-24実施・完了）
+1. お名前.comで `pt-vision.com` を取得（登録者: Yuya Toda / vision.r080808@gmail.com、
+   Whois情報公開代行あり、登録期限2027-07-24）
+2. Cloudflareダッシュボード → Domains → Add a domain → 「Connect a domain」
+   （※「Transfer a domain」ではない。レジストラはお名前.comのまま、DNS管理だけCloudflareに）
+3. DNSスキャンで見つかった不要な `A / www / 150.95.255.38`（お名前.comの仮ページ）を削除
+4. 発行されたネームサーバー **`alaric.ns.cloudflare.com` / `sneh.ns.cloudflare.com`** を
+   お名前.comの「ネームサーバーの変更」に設定（`dns1/dns2.onamae.com` から切り替え）
+5. `dig NS pt-vision.com` でCloudflareへの向き先切り替わりを確認
+6. Cloudflare Pages（vision-personal-gym）→ Custom domains → `pt-vision.com` を追加
+   （追加直後は「Initializing」、反映まで数分〜最大48時間）
+7. コード側を更新・再デプロイ：
+   - `.env.production` の `NEXT_PUBLIC_SITE_URL` → `https://pt-vision.com`
+   - `app/layout.tsx` / `app/sitemap.ts` / `app/robots.ts` / `StructuredData.tsx` の
+     フォールバックURLも `https://pt-vision.com` に統一
+   - `src/data/site.ts` の `email` → `info@pt-vision.com`
+
+### Google Workspace（2026-07-24時点・設定途中）
+Business Starterプランでユーザー名作成まで進行（ユーザー名は `info` を推奨・採用、
+`info@pt-vision.com` が管理者ログイン兼公開連絡先を兼ねる想定）。
+**残タスク**: Workspace契約完了後、CloudflareのDNSにMX/SPF/DKIMレコードを追加する必要がある
+（まだ未実施。追加するまで `info@pt-vision.com` 宛のメールは受信できない）。
+
+---
+
+## 13. コミット履歴
 
 - `02fb03e` feat: STUDIO YU パーソナルジム公式サイト（Next.js 14 LP）初版
 - `f52b23d` feat: 暖色系テーマへ全面リデザイン・カーソル/地図/無投薬表記を削除

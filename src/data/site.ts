@@ -14,7 +14,7 @@ export const site = {
   area: "岡山県苫田郡鏡野町上森原353-3", // 2026-07-23 正式住所決定
   tel: "080-2889-8819",
   telLink: "08028898819",
-  email: "yu.fit.jp@gmail.com", // ※仮
+  email: "info@pt-vision.com", // 2026-07-24 正式ドメイン確定に伴い変更（Google Workspace設定完了後に有効化）
   instagram: "https://www.instagram.com/yu_fitness_jp",
   instagramHandle: "@yu_fitness_jp",
   line: "https://lin.ee/VB6XkDR", // 公式LINE（2026-07-23 追加）
