@@ -49,11 +49,9 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.15}>
               <h1 className="fluid-hero heading-ja mt-8">
-                あなたが思い描く
+                理想を、現実に。
                 <br />
-                理想の自分を
-                <br />
-                実現する場所
+                なりたい自分へ！
               </h1>
             </Reveal>
             <Reveal delay={0.22}>
