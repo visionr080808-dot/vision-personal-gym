@@ -245,13 +245,13 @@ wranglerが未ログインの場合は先に `npx wrangler login`（vision.r0808
 
 - **ホスティングは2026-07-24にVercelからCloudflare Pagesへ完全移行済み**
   （静的書き出し化 + 無料・商用利用可のため）。
-- **独自ドメイン `pt-vision.com` は2026-07-24に取得完了・Cloudflareに接続済み**
-  （ネームサーバーをCloudflareに変更、Custom domainsに追加、コード側のURL/メールも更新・
-  再デプロイ済み）。DNS反映のタイムラグで実際に見えるようになるまで数分〜数時間かかる場合がある。
+- **独自ドメイン `pt-vision.com` は2026-07-24に取得・Cloudflare接続・本番反映まで完了**
+  （HTTP 200で正常表示を確認済み）。
+- **Google Workspaceのメール（`info@pt-vision.com`）も2026-07-24に設定完了**。
+  MXレコード（`smtp.google.com` priority 1）・SPFレコード（TXT）をCloudflareのDNSに追加し、
+  どちらも反映確認済み。DKIMは未設定（必須ではないが、なりすまし対策としてより強固にしたい
+  場合は後日Google管理画面の「メールの認証」からDKIMを有効化し、表示されるTXTレコードを追加するとよい）。
   詳細な作業ログは「12. ドメイン接続・Google Workspace」参照。
-- **Google Workspace（メール）は契約手続き中**（`info@pt-vision.com`）。ユーザー名作成まで進行。
-  契約完了後、CloudflareのDNSにMX/SPF/DKIMレコードを追加する必要がある（未実施）。
-  それまでは `info@pt-vision.com` 宛のメールは届かない点に注意（サイト上の表記自体は変更済み）。
 - **GitHub⇄Cloudflare Pagesの自動デプロイ連携は未設定**。現状は
   `npx wrangler pages deploy out ...` の手動デプロイのみ。自動化したい場合は、
   Cloudflareダッシュボード（vision.r080808@gmail.comでログイン）→ Workers & Pages →
@@ -359,11 +359,25 @@ APIキー自体は共通（サービス単位）なので、既にいただい�
      フォールバックURLも `https://pt-vision.com` に統一
    - `src/data/site.ts` の `email` → `info@pt-vision.com`
 
-### Google Workspace（2026-07-24時点・設定途中）
-Business Starterプランでユーザー名作成まで進行（ユーザー名は `info` を推奨・採用、
-`info@pt-vision.com` が管理者ログイン兼公開連絡先を兼ねる想定）。
-**残タスク**: Workspace契約完了後、CloudflareのDNSにMX/SPF/DKIMレコードを追加する必要がある
-（まだ未実施。追加するまで `info@pt-vision.com` 宛のメールは受信できない）。
+### Google Workspace（2026-07-24実施・完了）
+**Business Standard**プラン（月額¥1,900、初回3ヶ月は50%オフの¥950/月キャンペーン適用、
+試用期間中）で契約。ユーザー名は `info`（→ `info@pt-vision.com`）を採用し、
+管理者ログイン兼公開連絡先を兼ねる。
+
+**管理者アカウントの構造に注意**: Workspace全体の管理者（スーパー管理者）は
+サインアップ時に使った個人Googleアカウント **`vision.r080808@gmail.com`** であり、
+`info@pt-vision.com` はその配下に作られた一般ユーザー（管理者権限なし）。
+**Admin Console（admin.google.com）には必ず `vision.r080808@gmail.com` でログインすること。**
+`info@pt-vision.com` でログインすると「このGoogle Workspaceアカウントは有効ではありません」
+と表示されるが、これは異常ではなく仕様通り（管理者権限がないだけ）。
+
+DNSに以下の2レコードを追加し、反映確認済み：
+- MX: `@` → `smtp.google.com`（priority 1）※現在のGoogle Workspaceは単一MXレコード方式
+- TXT (SPF): `@` → `v=spf1 include:_spf.google.com ~all`
+
+DKIMは未設定（必須ではないが、より強固にしたい場合はAdmin Consoleの
+「アプリ→Google Workspace→Gmail→メールの認証」からDKIMを有効化し、
+表示されるTXTレコードをCloudflareに追加するとよい）。
 
 ---
 
