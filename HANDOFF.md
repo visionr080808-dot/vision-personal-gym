@@ -1,6 +1,6 @@
 # VISION Personal Gym 公式サイト 引き継ぎ書
 
-最終更新: 2026-07-23
+最終更新: 2026-07-24
 
 岡山県苫田郡鏡野町の完全マンツーマン・パーソナルジム「VISION Personal Gym」の
 公式サイト（1ページ完結LP）。正式な受注制作物。
@@ -12,17 +12,20 @@
 
 | 項目 | 内容 |
 |------|------|
-| **本番URL** | **https://vision-personal-gym.vercel.app** |
-| **GitHub（現行）** | **https://github.com/visionr080808-dot/vision-personal-gym** |
-| Vercel scope | **vision888**（アカウント: visionr080808-1799 / vision.r080808@gmail.com） |
-| Vercelプロジェクト名 | vision-personal-gym |
+| **本番URL（現行・Cloudflare Pages）** | **https://vision-personal-gym.pages.dev** |
+| **GitHub** | **https://github.com/visionr080808-dot/vision-personal-gym** |
+| Cloudflareアカウント | vision.r080808@gmail.com（Account ID: ffa3bed80e0d8ec8e317b0ab311ec0fd） |
+| Cloudflare Pagesプロジェクト名 | vision-personal-gym |
 | GitHubアカウント | visionr080808-dot（vision.r080808@gmail.com 系） |
 | ローカル | `/Users/hiroshikento/Documents/portfolio-studio-yu`（SHIMA CRAFT の隣・別リポジトリ、フォルダ名・git remote名は旧名のまま） |
+| 独自ドメイン | `pt-vision.com`（お名前.comで取得手続き中。接続後に本項目・NEXT_PUBLIC_SITE_URLを更新） |
 
-※2026-07-23、GitHub・VercelともにVision側の新アカウントへ完全移行済み。
-旧shimacraft8側（GitHub: shimacraft8/portfolio-studio-yu、Vercel: shimacraft8-6355s-projects /
-portfolio-studio-yu-pied.vercel.app）は履歴として残存するが、**今後の開発・デプロイ対象ではない**。
-※独自ドメインは取得後に接続予定。現状は vercel.app のまま。
+**旧ホスティング（Vercel）は2026-07-24付けで運用終了・Cloudflare Pagesへ完全移行済み。**
+理由: Vercelの無料"Hobby"プランは商用利用不可の規約のため、Proプラン（$20/月）が必要になる想定だったが、
+このサイトはAPI Route等のサーバー機能を一切使わない完全静的サイトのため、**静的ホスティングとして
+商用利用可・無料枠が寛大なCloudflare Pagesへ切り替え**、コストをゼロに抑えた。
+旧Vercel環境（vision888スコープ、`vision-personal-gym.vercel.app`）は履歴として残存するが今後更新しない。
+GitHub: shimacraft8/portfolio-studio-yu（さらに旧）も履歴として残存、今後の対象ではない。
 
 ### 移行の経緯（重要）
 2026-07-23、以下の手順で shimacraft8 → Vision（新アカウント）への完全移行を実施：
@@ -39,21 +42,33 @@ portfolio-studio-yu-pied.vercel.app）は履歴として残存するが、**今�
 **いずれの手順でもパスワードの直接入力は一切行っていない**（Vercelはブラウザの既存セッション、
 GitHubはユーザー自身によるワンタイムコード承認）。
 
-### 残タスク: Vercel⇄GitHubの自動デプロイ連携（未完了）
-`vercel git connect` を試みたが、"Failed to connect... make sure you have access" のエラーで
-失敗した。原因はおそらく **Vercelの GitHub App が visionr080808-dot アカウント側でまだ
-インストール/認可されていない**ため。現状はCLI手動デプロイのみで運用しており、
-push しても自動デプロイはされない。自動化したい場合は、Vercelダッシュボード
-（Project Settings → Git → Connect Git Repository）からご自身で認可を通していただく必要がある。
+### Cloudflare Pagesへの移行の経緯（2026-07-24）
+Vercelの無料"Hobby"プランは商用利用不可の規約のため、本来はProプラン（$20/月）が必要と
+なる想定だった。しかしこのサイトはAPI Route・サーバーアクション等を一切使わない完全静的サイト
+のため、`next.config.mjs` に `output: "export"` を追加してNext.jsの**静的書き出し**に変更し、
+Cloudflare Pages（無料・商用利用可・帯域無制限）へ移行した。これにより追加コストなしで
+商用利用の規約リスクを解消。
+
+Cloudflareアカウントへのログインも、GitHubと同様に一度ブラウザでの手動承認が必要だった
+（`wrangler login` のOAuthフロー。1回目はCSRFエラーで失敗したため再試行）。
+**パスワードの直接入力は行っていない。**
+
+現状はCLI手動デプロイのみで運用（`wrangler pages deploy`）。GitHub⇄Cloudflare Pagesの
+自動デプロイ連携（pushで自動反映）はまだ設定していない（Cloudflareダッシュボードでの
+手動接続が必要。「10. 未対応・申し送り事項」参照）。
+
+**旧Vercel環境は運用終了**（vision888スコープ、`vision-personal-gym.vercel.app`）。
+削除はしていないが今後更新しない。
 
 ---
 
 ## 2. 技術スタック
 
-- Next.js 14（App Router）+ TypeScript
+- Next.js 14（App Router）+ TypeScript、**`output: "export"` による完全静的書き出し**
+  （API Route・サーバーアクションなし。`next/image` は `unoptimized: true`）
 - Tailwind CSS 3 + Framer Motion 11
 - next/font/google: Outfit（見出し英字）/ Noto Sans JP（本文・和文）
-- ホスティング: Vercel（CLI手動デプロイ）
+- ホスティング: **Cloudflare Pages**（`wrangler` CLIで手動デプロイ。GitHub自動連携は未設定）
 
 ---
 
@@ -78,10 +93,10 @@ portfolio-studio-yu/
 │       ├── Faq.tsx             # FAQアコーディオン
 │       ├── StructuredData.tsx  # 構造化データ（HealthClub）
 │       ├── Analytics.tsx       # GA4（環境変数未設定なら読み込まない）
-│       └── HeroBackground.tsx  # ヒーロー背景の自動クロスフェードカルーセル（6秒間隔）
+│       └── HeroBackground.tsx  # ヒーロー背景の自動スライド切替（左方向・6秒間隔）
 ├── app/icon.png           # favicon（ロゴから生成）
 └── public/images/
-    ├── gym-interior.jpg   # ヒーロー背景（ジム内装・モノクロ）
+    ├── gym-interior.jpg   # OGP/構造化データ用画像（ヒーローには不使用）
     ├── logo.jpg           # ロゴ原本（黒・白背景1280px）
     ├── logo-black.png     # 透過・黒ロゴ（ヘッダー/フッター用）
     ├── logo-white.png     # 透過・白ロゴ（ヒーロー/ヘッダー最上部用）
@@ -95,8 +110,8 @@ portfolio-studio-yu/
 ## 4. ページ構成
 
 Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Trainer（トレーナー紹介）
-→ Menu（4メニュー）→ Price（キャンペーンバナー＋回数券/月額/セミパーソナルの3グループ）→ Voice（お客様の声）
-→ Access/FAQ → Contact → Footer
+→ Menu（5項目の簡易リスト）→ Price（キャンペーンバナー＋回数券/月額/セミパーソナルの3グループ）
+→ Voice（お客様の声）→ Access/FAQ → Contact → Footer
 
 ---
 
@@ -128,14 +143,16 @@ Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Tr
 ## 6. 主要コンテンツ（※仮の項目に注意）
 
 - 店名: **VISION**（フル表記 VISION Personal Gym）— 2026-07 正式決定
-- タグライン: 「あなたが思い描く理想の自分を実現する場所」（2026-07-23追加、ヒーローに表示）
+- ヒーロー見出し（h1）: **「あなたが思い描く理想の自分を実現する場所」**（`site.tagline`。
+  2026-07-24にメイン見出しへ変更。PC/スマホとも同じ3行改行 `あなたが思い描く／理想の自分を／実現する場所`
+  で明示的に固定。旧キャッチ「鍛える、整える、続けられる。」は撤去）
+- ヒーロー背景: 新写真5枚（hero-1〜5.jpg）を**左方向スライドで自動切替**（`HeroBackground.tsx`、6秒間隔）
 - 住所: **岡山県苫田郡鏡野町上森原353-3**（2026-07-23正式住所決定・公開。Access に実際のGoogleマップ埋め込み追加）
 - 公式LINE: https://lin.ee/VB6XkDR（2026-07-23追加。Contact/ヘッダーCTA/モバイル固定CTAの主導線に採用）
 - 体験トレーニング: 20分1,000円 → **30分2,000円に変更**（2026-07-23）
 - メニュー: 旧4項目(タイトル+説明文)を**5項目のシンプルな箇条書きリストに変更**（ボディメイク/ダイエット/筋力トレーニング/姿勢改善/ピラティス・栄養サポート）
 - ロゴ: `public/images/` に配置（logo.jpg=原本 / logo-black.png・logo-white.png=透過版、
   元ファイルは `~/Documents/戸田くん/ジムロゴ.jpg`）。favicon は `app/icon.png`
-- キャッチ: 鍛える、整える、続けられる。
 - トレーナー: 戸田 有哉（TODA YUYA）/ パーソナルトレーナー・ピラティスインストラクター
   - 資格タグ: パーソナルトレーナー / ピラティスインストラクター(FRP) / メンズフィジーク出場
   - ※「ナチュラル（無投薬）」表記・「Natural Athlete」タグは削除済み
@@ -159,12 +176,17 @@ Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Tr
 
 ---
 
-## 7. 環境変数（Vercel / .env.example）
+## 7. 環境変数
+
+`.env.production`（リポジトリにコミット済み。シークレットなしの公開URLのみのため問題なし）：
 
 | 変数 | 用途 | 現状 |
 |------|------|------|
-| NEXT_PUBLIC_SITE_URL | 本番URL（OGP/sitemap/構造化データ） | production登録済み（https://vision-personal-gym.vercel.app、vision888スコープ側） |
+| NEXT_PUBLIC_SITE_URL | 本番URL（OGP/sitemap/構造化データ、ビルド時に静的ページへ埋め込み） | `https://vision-personal-gym.pages.dev`（**独自ドメイン接続後に要更新・再ビルド・再デプロイ**） |
 | NEXT_PUBLIC_GA_ID | GA4測定ID | 未設定（設定すると自動で計測開始） |
+
+※静的書き出し（`output: "export"`）のため、`NEXT_PUBLIC_*` はビルド時にHTMLへ焼き込まれる。
+値を変える際は必ず `npm run build` → 再デプロイが必要（実行時に切り替わるものではない）。
 
 ---
 
@@ -175,15 +197,17 @@ Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Tr
 npm install
 npm run dev -- -p 3210      # http://localhost:3210
 
-# ビルド確認
+# ビルド（out/ に静的ファイルが生成される）
 npm run build
 
 # コード管理: visionr080808-dot の GitHub に push
 git add -A && git commit -m "..." && git push origin main
 
-# デプロイ（本番・vision888アカウント、GitHub自動連携は未設定のため手動）
-vercel --prod --yes --scope vision888
+# デプロイ（本番・Cloudflare Pages。GitHub自動連携が未設定のため毎回手動）
+npx wrangler pages deploy out --project-name=vision-personal-gym --branch=main
 ```
+
+wranglerが未ログインの場合は先に `npx wrangler login`（vision.r080808@gmail.comでブラウザ認可）。
 
 ---
 
@@ -192,24 +216,34 @@ vercel --prod --yes --scope vision888
 - 文言・料金・声・FAQ・実績の変更 → `src/data/site.ts` のみ編集
 - 配色の変更 → `tailwind.config.ts` の colors
 - 写真の差し替え → `public/images/` に同名で上書き（ヒーローは hero-1〜5.jpg、5枚まで対応）
-- 独自ドメイン接続 → Vercelダッシュボードから（店名はVISIONで確定済み）
+- どの変更も、編集後は必ず「8. 開発・デプロイ手順」のビルド→デプロイが必要
+  （GitHubで編集しただけでは反映されない。詳しくは `更新手順書.md` 参照）
+- 独自ドメイン接続 → Cloudflareダッシュボード（Workers & Pages → vision-personal-gym →
+  Custom domains）から。接続後は `.env.production` の NEXT_PUBLIC_SITE_URL も更新し再デプロイ
 
 ---
 
 ## 10. 未対応・申し送り事項
 
-- **GitHub・Vercelともにvisionアカウントへ移行完了**（GitHub: visionr080808-dot、
-  Vercel: vision888）。旧shimacraft8側のリポジトリ・Vercelプロジェクトは履歴として残存のみ。
-- **Vercel⇄GitHubの自動デプロイ連携は未完了**（`vercel git connect` が権限エラーで失敗。
-  おそらくVercel GitHub Appがvisionr080808-dotアカウントに未インストール）。
-  現状はpushしても自動デプロイされないため、**変更を公開する際は毎回
-  `vercel --prod --yes --scope vision888` の手動デプロイが必要**。
-  自動化するには、Vercelダッシュボード（vision888でログイン）→ Project Settings → Git →
-  Connect Git Repository から visionr080808-dot/vision-personal-gym を選び、
-  GitHub App の認可を通していただく必要がある（ブラウザでの手動承認が必要なため未実施）。
-- 旧shimacraft8側のデプロイ（`portfolio-studio-yu-pied.vercel.app`）・リポジトリは
-  不要であれば後日削除してよい。
-- 独自ドメインは未接続（現状 vercel.app のまま）。取得後にVercelで接続。
+- **ホスティングは2026-07-24にVercelからCloudflare Pagesへ完全移行済み**
+  （静的書き出し化 + 無料・商用利用可のため）。現行の本番URLは
+  `https://vision-personal-gym.pages.dev`。
+- **GitHub⇄Cloudflare Pagesの自動デプロイ連携は未設定**。現状は
+  `npx wrangler pages deploy out ...` の手動デプロイのみ。自動化したい場合は、
+  Cloudflareダッシュボード（vision.r080808@gmail.comでログイン）→ Workers & Pages →
+  vision-personal-gym → Settings → Builds & deployments から
+  `visionr080808-dot/vision-personal-gym` のGitHub連携を設定する（ブラウザでの手動承認が必要）。
+- **独自ドメイン `pt-vision.com` を お名前.com で取得手続き中**（2026-07-24時点、購入完了報告待ち）。
+  取得完了後の手順：
+  1. Cloudflareダッシュボードでカスタムドメインとして追加（または「Add Existing」）
+  2. 表示されるA/CNAMEレコードをお名前.comのDNS設定に追加
+  3. `.env.production` の `NEXT_PUBLIC_SITE_URL` を `https://pt-vision.com` に更新
+  4. `src/data/site.ts` の `email` を `info@pt-vision.com` に更新（現状は仮の yu.fit.jp@gmail.com）
+  5. 再ビルド・再デプロイ
+- **Google Workspace（メール）は未契約**（`info@pt-vision.com` 用に検討中。契約後、
+  DNS側にMX/SPF/DKIMレコードの追加が必要）。
+- 旧Vercel環境（vision888スコープ、`vision-personal-gym.vercel.app`）・
+  旧shimacraft8側のGitHub/Vercelは履歴として残存。不要であれば後日削除してよい。
 - 正式オープン日・セミパーソナル8回の単価表記（4,350 vs 4,375）は戸田さんに要確認。
 
 ---
