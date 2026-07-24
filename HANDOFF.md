@@ -78,12 +78,14 @@ Cloudflareアカウントへのログインも、GitHubと同様に一度ブラ�
 portfolio-studio-yu/
 ├── app/
 │   ├── layout.tsx        # Metadata/OGP・フォント・StructuredData/Analytics読込
-│   ├── page.tsx          # 全セクションを組み立てるメインページ
+│   ├── page.tsx          # 全セクションを組み立てるメインページ（LP）
+│   ├── results/page.tsx  # 実績ページ（お客様のBefore/After。microCMSから取得、新設）
 │   ├── globals.css       # 配色・流体タイポ・reduced-motion対応
 │   ├── sitemap.ts        # 自動生成
 │   └── robots.ts         # 自動生成
 ├── src/
 │   ├── data/site.ts      # ★全文言の一元管理（差し替えはここ）
+│   ├── lib/microcms.ts   # 実績ページ用データ取得（microCMS REST APIをクライアント側fetch）
 │   └── components/
 │       ├── Header.tsx          # グラスモーフィズム・スクロールで文字色切替
 │       ├── MobileCTA.tsx       # スマホ下部固定CTA（電話/Instagram）
@@ -93,7 +95,9 @@ portfolio-studio-yu/
 │       ├── Faq.tsx             # FAQアコーディオン
 │       ├── StructuredData.tsx  # 構造化データ（HealthClub）
 │       ├── Analytics.tsx       # GA4（環境変数未設定なら読み込まない）
-│       └── HeroBackground.tsx  # ヒーロー背景の自動スライド切替（左方向・6秒間隔）
+│       ├── HeroBackground.tsx  # ヒーロー背景の自動スライド切替（左方向・6秒間隔）
+│       ├── SectionHead.tsx     # セクション見出し共通部品（page.tsx/results/page.tsxで共用）
+│       └── Buttons.tsx         # BtnFill/BtnLine 共通ボタン部品（同上）
 ├── app/icon.png           # favicon（ロゴから生成）
 └── public/images/
     ├── gym-interior.jpg   # OGP/構造化データ用画像（ヒーローには不使用）
@@ -184,9 +188,13 @@ Hero → Concept（特徴3つ）→ Stats（実績カウントアップ）→ Tr
 |------|------|------|
 | NEXT_PUBLIC_SITE_URL | 本番URL（OGP/sitemap/構造化データ、ビルド時に静的ページへ埋め込み） | `https://vision-personal-gym.pages.dev`（**独自ドメイン接続後に要更新・再ビルド・再デプロイ**） |
 | NEXT_PUBLIC_GA_ID | GA4測定ID | 未設定（設定すると自動で計測開始） |
+| NEXT_PUBLIC_MICROCMS_SERVICE_DOMAIN | 実績ページ用microCMSのサービスID | **未設定**（microCMS契約後に設定。「11. 実績ページ」参照） |
+| NEXT_PUBLIC_MICROCMS_API_KEY | 同APIキー（読み取り専用） | **未設定** |
 
 ※静的書き出し（`output: "export"`）のため、`NEXT_PUBLIC_*` はビルド時にHTMLへ焼き込まれる。
 値を変える際は必ず `npm run build` → 再デプロイが必要（実行時に切り替わるものではない）。
+※ただしmicroCMSのAPI取得だけは例外で、実績ページはブラウザ側で毎回APIを呼びに行く実装のため、
+**microCMS側で公開ボタンを押すだけで再デプロイ不要・即座にサイトへ反映される**（詳細は11.）。
 
 ---
 
@@ -242,13 +250,74 @@ wranglerが未ログインの場合は先に `npx wrangler login`（vision.r0808
   5. 再ビルド・再デプロイ
 - **Google Workspace（メール）は未契約**（`info@pt-vision.com` 用に検討中。契約後、
   DNS側にMX/SPF/DKIMレコードの追加が必要）。
+- **実績ページ（/results）のmicroCMS連携がまだ未設定**（アカウント未作成・APIキー未取得）。
+  設定手順は「11. 実績ページ（microCMS連携）」を参照。設定するまでは
+  「準備中です」というプレースホルダー文言が表示される（壊れてはいない）。
 - 旧Vercel環境（vision888スコープ、`vision-personal-gym.vercel.app`）・
   旧shimacraft8側のGitHub/Vercelは履歴として残存。不要であれば後日削除してよい。
 - 正式オープン日・セミパーソナル8回の単価表記（4,350 vs 4,375）は戸田さんに要確認。
 
 ---
 
-## 11. コミット履歴
+## 11. 実績ページ（microCMS連携）
+
+2026-07-24追加。「お客様の実績（Before/After）」を、**戸田さんがコードやGitHubを一切触らずに
+自分で更新できる**ようにするため、ヘッドレスCMS「microCMS」と連携する専用ページ
+（`/results`）を新設した。
+
+### 仕組み
+- サイト本体は今も完全な静的サイト（Cloudflare Pages）のまま
+- `/results` ページだけは**ブラウザ側で直接microCMSのAPIを呼び出して**内容を表示する
+  （`src/lib/microcms.ts` の `fetchResults()`）
+- そのため、**戸田さんがmicroCMSの管理画面で「公開」ボタンを押した瞬間に、
+  サイトの再ビルド・再デプロイなしでそのまま反映される**
+- microCMS未設定の間は、環境変数が空なので「準備中です」と表示されるだけで、
+  ビルドエラーにはならない安全設計
+
+### セキュリティ上の注意（要認識）
+`NEXT_PUBLIC_MICROCMS_API_KEY` はブラウザ側で使う都合上、**サイトのソースコードに
+公開される**（読み取り専用キーであっても、誰でも閲覧はできる状態になる）。
+実績データは元々公開情報なので実害は小さいが、他人がこのキーで大量にAPIを叩くと
+microCMSの無料枠の呼び出し上限を消費される可能性はゼロではない。
+より厳密に隠したい場合は、GitHub⇄Cloudflare Pagesの自動デプロイ連携を設定した上で、
+microCMSの「Webhook」→ Cloudflare Pagesの「Deploy Hook」経由でビルド時取得に変更する
+方式に切り替えることもできる（この場合、更新反映に数分のビルド時間がかかるようになる）。
+
+### 戸田さんによるmicroCMSセットアップ手順（アカウント作成が必要なため要本人対応）
+
+1. https://microcms.io/ で無料アカウントを作成（メール+パスワード、またはGoogleログイン）
+2. 新しい「サービス」を作成（サービスID例: `vision-gym`。これがそのまま
+   `〇〇.microcms.io` のサブドメインになる）
+3. 「API作成」→ 種類は **リスト形式** → API名（エンドポイント）を **`results`** にする
+4. 以下のフィールドを追加：
+
+   | フィールドID | 表示名 | 種類 |
+   |---|---|---|
+   | title | お名前・タイトル | テキストフィールド |
+   | category | カテゴリ | テキストフィールド（例: ボディメイク） |
+   | period | 期間 | テキストフィールド（例: 3ヶ月） |
+   | beforeImage | Before画像 | 画像 |
+   | afterImage | After画像 | 画像 |
+   | comment | お客様の声 | テキストエリア |
+
+5. 左メニュー「API設定」→「APIキー」から、**GET（読み取り専用）のAPIキー**をコピー
+6. サービスID（例: `vision-gym`）とAPIキーの2つを私に共有してください
+
+これを受け取ったら、`.env.production` に以下を追加し、再ビルド・再デプロイします：
+
+```
+NEXT_PUBLIC_MICROCMS_SERVICE_DOMAIN=（サービスID）
+NEXT_PUBLIC_MICROCMS_API_KEY=（APIキー）
+```
+
+### 戸田さんの日常運用（セットアップ後）
+1. microCMSにログイン → 「results」→「コンテンツを追加」
+2. お名前・カテゴリ・期間・Before/After画像・お客様の声を入力
+3. 「公開」ボタンを押す → その場でサイトの `/results` ページに反映（再デプロイ不要）
+
+---
+
+## 12. コミット履歴
 
 - `02fb03e` feat: STUDIO YU パーソナルジム公式サイト（Next.js 14 LP）初版
 - `f52b23d` feat: 暖色系テーマへ全面リデザイン・カーソル/地図/無投薬表記を削除

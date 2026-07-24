@@ -5,12 +5,13 @@ import Image from "next/image";
 import { site } from "@/src/data/site";
 
 const nav = [
-  { label: "Concept", href: "#concept" },
-  { label: "Trainer", href: "#trainer" },
-  { label: "Menu", href: "#menu" },
-  { label: "Price", href: "#price" },
-  { label: "Access", href: "#access" },
-  { label: "Contact", href: "#contact" },
+  { label: "Concept", href: "/#concept" },
+  { label: "Trainer", href: "/#trainer" },
+  { label: "Menu", href: "/#menu" },
+  { label: "Price", href: "/#price" },
+  { label: "Results", href: "/results" },
+  { label: "Access", href: "/#access" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Header() {
@@ -33,7 +34,7 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <a href="#hero" aria-label={site.fullName}>
+        <a href="/" aria-label={site.fullName}>
           <Image
             src={scrolled ? "/images/logo-black.png" : "/images/logo-white.png"}
             alt={site.fullName}
@@ -57,7 +58,7 @@ export function Header() {
             </a>
           ))}
           <a
-            href="#contact"
+            href="/#contact"
             className={`display-en border px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] transition-colors ${
               scrolled
                 ? "border-accent bg-accent text-white hover:bg-black"
