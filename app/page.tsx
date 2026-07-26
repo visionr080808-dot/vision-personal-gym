@@ -20,7 +20,7 @@ import { HeroBackground } from "@/src/components/HeroBackground";
 import { SectionHead } from "@/src/components/SectionHead";
 import { BtnFill, BtnLine } from "@/src/components/Buttons";
 import { ContactForm } from "@/src/components/ContactForm";
-import { LineIcon, InstagramIcon, PhoneIcon } from "@/src/components/Icons";
+import { PhoneIcon } from "@/src/components/Icons";
 
 export default function Home() {
   return (
@@ -508,7 +508,15 @@ export default function Home() {
                   external
                   variant="light"
                   full
-                  icon={<LineIcon />}
+                  icon={
+                    <Image
+                      src="/images/line-icon.png"
+                      alt=""
+                      width={18}
+                      height={18}
+                      className="h-[18px] w-[18px]"
+                    />
+                  }
                 >
                   公式LINEで予約する
                 </BtnFill>
@@ -517,7 +525,15 @@ export default function Home() {
                   external
                   dark
                   full
-                  icon={<InstagramIcon />}
+                  icon={
+                    <Image
+                      src="/images/instagram-icon.png"
+                      alt=""
+                      width={18}
+                      height={18}
+                      className="h-[18px] w-[18px]"
+                    />
+                  }
                 >
                   Instagram DM で予約する
                 </BtnLine>
