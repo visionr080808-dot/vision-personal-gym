@@ -10,6 +10,7 @@ const nav = [
   { label: "Menu", href: "/#menu" },
   { label: "Price", href: "/#price" },
   { label: "Results", href: "/results" },
+  { label: "Blog", href: "/blog" },
   { label: "Access", href: "/#access" },
   { label: "Contact", href: "/#contact" },
 ];

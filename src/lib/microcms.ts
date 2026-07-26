@@ -22,6 +22,15 @@ export type AchievementItem = {
   publishedAt: string;
 };
 
+export type BlogPost = {
+  id: string;
+  title: string;
+  content: string; // リッチエディタのHTML
+  eyecatch?: { url: string; width: number; height: number };
+  category?: { id: string; name: string };
+  publishedAt: string;
+};
+
 type MicroCmsListResponse<T> = {
   contents: T[];
 };
@@ -50,4 +59,24 @@ export function fetchResults(): Promise<ResultItem[]> {
 
 export function fetchAchievements(): Promise<AchievementItem[]> {
   return fetchList<AchievementItem>("achievements");
+}
+
+async function fetchOne<T>(endpoint: string, id: string): Promise<T | null> {
+  if (!microCmsConfigured) return null;
+
+  const res = await fetch(
+    `https://${SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}/${id}`,
+    { headers: { "X-MICROCMS-API-KEY": API_KEY as string } }
+  );
+  if (!res.ok) return null;
+
+  return (await res.json()) as T;
+}
+
+export function fetchBlogPosts(): Promise<BlogPost[]> {
+  return fetchList<BlogPost>("blog");
+}
+
+export function fetchBlogPost(id: string): Promise<BlogPost | null> {
+  return fetchOne<BlogPost>("blog", id);
 }
