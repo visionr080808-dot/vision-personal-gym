@@ -27,7 +27,7 @@ export type BlogPost = {
   title: string;
   content: string; // リッチエディタのHTML
   eyecatch?: { url: string; width: number; height: number };
-  category?: { id: string; name: string };
+  category?: string;
   publishedAt: string;
 };
 

@@ -16,6 +16,7 @@ import {
 
 export default function ResultsPage() {
   const [items, setItems] = useState<ResultItem[] | null>(null);
+  const [selected, setSelected] = useState<ResultItem | null>(null);
 
   useEffect(() => {
     fetchResults().then(setItems);
@@ -53,7 +54,14 @@ export default function ResultsPage() {
             {items?.map((item, i) => (
               <Reveal key={item.id} delay={(i % 2) * 0.08}>
                 <article className="h-full bg-white p-6 sm:p-8">
-                  <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      (item.beforeImage || item.afterImage) &&
+                      setSelected(item)
+                    }
+                    className="grid w-full grid-cols-2 gap-2 text-left"
+                  >
                     {item.beforeImage && (
                       <div className="relative aspect-[3/4] overflow-hidden bg-card2">
                         <Image
@@ -82,7 +90,7 @@ export default function ResultsPage() {
                         </span>
                       </div>
                     )}
-                  </div>
+                  </button>
 
                   <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1">
                     <h3 className="heading-ja text-lg">{item.title}</h3>
@@ -122,6 +130,56 @@ export default function ResultsPage() {
           </Reveal>
         </section>
       </main>
+
+      {selected && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 sm:p-8"
+          onClick={() => setSelected(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setSelected(null)}
+            aria-label="閉じる"
+            className="absolute right-5 top-5 text-2xl text-white/70 transition-colors hover:text-white"
+          >
+            ✕
+          </button>
+          <div
+            className="grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {selected.beforeImage && (
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
+                <Image
+                  src={selected.beforeImage.url}
+                  alt={`${selected.title} Before`}
+                  fill
+                  sizes="90vw"
+                  className="object-contain"
+                />
+                <span className="display-en absolute bottom-3 left-3 bg-black/60 px-2 py-0.5 text-[10px] tracking-[0.2em] text-white">
+                  BEFORE
+                </span>
+              </div>
+            )}
+            {selected.afterImage && (
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
+                <Image
+                  src={selected.afterImage.url}
+                  alt={`${selected.title} After`}
+                  fill
+                  sizes="90vw"
+                  className="object-contain"
+                />
+                <span className="display-en absolute bottom-3 left-3 bg-accent px-2 py-0.5 text-[10px] tracking-[0.2em] text-white">
+                  AFTER
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <MobileCTA />
     </>
   );

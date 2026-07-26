@@ -82,7 +82,7 @@ export default function BlogPage() {
                     <span className="display-en">{formatDate(post.publishedAt)}</span>
                     {post.category && (
                       <span className="border border-text/20 px-2 py-0.5 text-[10px]">
-                        {post.category.name}
+                        {post.category}
                       </span>
                     )}
                   </div>
