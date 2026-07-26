@@ -7,12 +7,14 @@ export function BtnFill({
   external = false,
   variant = "dark",
   full = false,
+  icon,
 }: {
   href: string;
   children: ReactNode;
   external?: boolean;
   variant?: "dark" | "light";
   full?: boolean;
+  icon?: ReactNode;
 }) {
   const cls =
     variant === "dark"
@@ -26,6 +28,7 @@ export function BtnFill({
         full ? "w-full sm:w-auto" : ""
       }`}
     >
+      {icon}
       {children}
       <span className="transition-transform duration-300 group-hover:translate-x-1">
         →
@@ -41,12 +44,14 @@ export function BtnLine({
   external = false,
   dark = false,
   full = false,
+  icon,
 }: {
   href: string;
   children: ReactNode;
   external?: boolean;
   dark?: boolean;
   full?: boolean;
+  icon?: ReactNode;
 }) {
   const cls = dark
     ? "border-white/50 text-white hover:bg-white hover:text-text"
@@ -55,10 +60,11 @@ export function BtnLine({
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`inline-flex items-center justify-center border px-9 py-4 text-xs font-medium tracking-[0.15em] transition-colors ${cls} ${
+      className={`inline-flex items-center justify-center gap-3 border px-9 py-4 text-xs font-medium tracking-[0.15em] transition-colors ${cls} ${
         full ? "w-full sm:w-auto" : ""
       }`}
     >
+      {icon}
       {children}
     </a>
   );

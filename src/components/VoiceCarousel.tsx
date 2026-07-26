@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { voices, voicesNote } from "@/src/data/site";
+import { voices } from "@/src/data/site";
 
 export function VoiceCarousel() {
   const [i, setI] = useState(0);
@@ -60,9 +60,6 @@ export function VoiceCarousel() {
           />
         ))}
       </div>
-      <p className="mt-6 text-center text-[10px] tracking-[0.2em] text-text/40">
-        {voicesNote}
-      </p>
     </div>
   );
 }

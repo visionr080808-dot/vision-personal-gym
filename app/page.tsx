@@ -8,6 +8,7 @@ import {
   priceGroups,
   priceNote,
   heroImages,
+  flowSteps,
 } from "@/src/data/site";
 import { Header } from "@/src/components/Header";
 import { MobileCTA } from "@/src/components/MobileCTA";
@@ -19,6 +20,7 @@ import { HeroBackground } from "@/src/components/HeroBackground";
 import { SectionHead } from "@/src/components/SectionHead";
 import { BtnFill, BtnLine } from "@/src/components/Buttons";
 import { ContactForm } from "@/src/components/ContactForm";
+import { LineIcon, InstagramIcon, PhoneIcon } from "@/src/components/Icons";
 
 export default function Home() {
   return (
@@ -56,7 +58,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.22}>
               <p className="mx-auto mt-7 max-w-lg text-[13px] font-light leading-loose tracking-wider text-white/80 sm:text-sm">
-                {site.area}の完全マンツーマン・パーソナルジム。
+                完全マンツーマン・パーソナルジム。
                 <br className="hidden sm:block" />
                 あなただけの空間で、一生使える体づくりを。
               </p>
@@ -372,6 +374,55 @@ export default function Home() {
           </p>
         </section>
 
+        {/* ============ FLOW ============ */}
+        <section id="flow" className="bg-card2 py-28 sm:py-40">
+          <div className="mx-auto max-w-2xl px-6">
+            <Reveal>
+              <SectionHead en="Flow" ja="ご利用までの流れ" center />
+            </Reveal>
+
+            <div className="mt-16">
+              {flowSteps.map((step, i) => (
+                <div key={step.no}>
+                  <Reveal delay={i * 0.08}>
+                    <div className="border border-line bg-white p-8 sm:p-10">
+                      <p className="display-en text-xs tracking-[0.3em] text-text/40">
+                        STEP {step.no}
+                      </p>
+                      <h3 className="heading-ja mt-3 text-lg sm:text-xl">
+                        {step.title}
+                      </h3>
+                      <div className="mt-4 space-y-2">
+                        {step.body.map((b) => (
+                          <p
+                            key={b}
+                            className="text-[13px] font-light leading-loose text-text/70"
+                          >
+                            {b}
+                          </p>
+                        ))}
+                      </div>
+                      {step.note && (
+                        <p className="mt-4 text-[11px] tracking-wide text-text/50">
+                          {step.note}
+                        </p>
+                      )}
+                    </div>
+                  </Reveal>
+
+                  {i < flowSteps.length - 1 && (
+                    <div className="flex justify-center py-3">
+                      <span className="display-en text-xl text-text/30">
+                        ↓
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ============ VOICE ============ */}
         <section className="bg-card2 py-28 sm:py-40">
           <div className="mx-auto max-w-6xl px-6">
@@ -392,7 +443,7 @@ export default function Home() {
               <p className="mt-8 text-[13px] font-light leading-loose tracking-wide text-text/70">
                 完全予約制のプライベートジムです。お車でお越しの際はご予約時にご案内いたします。
               </p>
-              <div className="mt-8 aspect-video w-full border border-line grayscale">
+              <div className="mt-8 aspect-video w-full border border-line">
                 <iframe
                   title={`${site.fullName} 地図`}
                   src={`https://www.google.com/maps?q=${encodeURIComponent(
@@ -452,13 +503,30 @@ export default function Home() {
 
             <Reveal delay={0.1}>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
-                <BtnFill href={site.line} external variant="light" full>
+                <BtnFill
+                  href={site.line}
+                  external
+                  variant="light"
+                  full
+                  icon={<LineIcon />}
+                >
                   公式LINEで予約する
                 </BtnFill>
-                <BtnLine href={site.instagram} external dark full>
+                <BtnLine
+                  href={site.instagram}
+                  external
+                  dark
+                  full
+                  icon={<InstagramIcon />}
+                >
                   Instagram DM で予約する
                 </BtnLine>
-                <BtnLine href={`tel:${site.telLink}`} dark full>
+                <BtnLine
+                  href={`tel:${site.telLink}`}
+                  dark
+                  full
+                  icon={<PhoneIcon />}
+                >
                   電話する（{site.tel}）
                 </BtnLine>
               </div>
