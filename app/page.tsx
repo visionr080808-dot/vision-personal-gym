@@ -20,7 +20,20 @@ import { HeroBackground } from "@/src/components/HeroBackground";
 import { SectionHead } from "@/src/components/SectionHead";
 import { BtnFill, BtnLine } from "@/src/components/Buttons";
 import { ContactForm } from "@/src/components/ContactForm";
-import { PhoneIcon } from "@/src/components/Icons";
+import {
+  PhoneIcon,
+  MailIcon,
+  ChatIcon,
+  DumbbellIcon,
+  BadgeCheckIcon,
+} from "@/src/components/Icons";
+
+const flowIcons = [
+  <MailIcon key="mail" />,
+  <ChatIcon key="chat" />,
+  <DumbbellIcon key="dumbbell" />,
+  <BadgeCheckIcon key="badge" />,
+];
 
 export default function Home() {
   return (
@@ -386,10 +399,15 @@ export default function Home() {
                 <div key={step.no}>
                   <Reveal delay={i * 0.08}>
                     <div className="border border-line bg-white p-8 sm:p-10">
-                      <p className="display-en text-xs tracking-[0.3em] text-text/40">
-                        STEP {step.no}
-                      </p>
-                      <h3 className="heading-ja mt-3 text-lg sm:text-xl">
+                      <div className="flex items-center gap-4">
+                        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line text-text/70">
+                          {flowIcons[i]}
+                        </span>
+                        <p className="display-en text-xs tracking-[0.3em] text-text/40">
+                          STEP {step.no}
+                        </p>
+                      </div>
+                      <h3 className="heading-ja mt-5 text-lg sm:text-xl">
                         {step.title}
                       </h3>
                       <div className="mt-4 space-y-2">
