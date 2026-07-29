@@ -4,11 +4,13 @@ export function SectionHead({
   ja,
   center = false,
   dark = false,
+  jaCompact = false,
 }: {
   en: string;
   ja: string;
   center?: boolean;
   dark?: boolean;
+  jaCompact?: boolean;
 }) {
   return (
     <div className={center ? "text-center" : ""}>
@@ -24,7 +26,11 @@ export function SectionHead({
           {en}
         </span>
       </div>
-      <h2 className={`heading-ja fluid-h2 mt-5 ${dark ? "text-white" : ""}`}>
+      <h2
+        className={`heading-ja mt-5 ${
+          jaCompact ? "fluid-h2-compact" : "fluid-h2"
+        } ${dark ? "text-white" : ""}`}
+      >
         {ja}
       </h2>
     </div>

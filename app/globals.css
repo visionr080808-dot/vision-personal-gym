@@ -59,6 +59,14 @@ h1, h2, h3, .font-display {
   letter-spacing: 0.05em;
   font-weight: 500;
 }
+/* 長めの和文見出しをスマホで1行に収めるための縮小版 */
+.fluid-h2-compact {
+  font-size: clamp(1.5rem, 3.6vw, 3.1rem);
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+  font-weight: 500;
+  white-space: nowrap;
+}
 
 /* セクション見出しのアクセントライン */
 .section-eyebrow {

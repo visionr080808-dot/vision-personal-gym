@@ -316,12 +316,20 @@ export default function Home() {
                     </ul>
                   </div>
 
+                  {g.disclaimer && (
+                    <p className="mt-4 text-[11px] tracking-wide text-text/50">
+                      {g.disclaimer}
+                    </p>
+                  )}
+
                   <div
                     className={`mt-8 grid grid-cols-2 gap-px bg-line ${
                       g.plans.length >= 5
                         ? "md:grid-cols-5"
                         : g.plans.length === 4
                         ? "md:grid-cols-4"
+                        : g.plans.length === 3
+                        ? "md:mx-auto md:max-w-3xl md:grid-cols-3"
                         : "md:mx-auto md:max-w-2xl md:grid-cols-2"
                     }`}
                   >
@@ -512,6 +520,7 @@ export default function Home() {
                 ja="まずは、お気軽にご相談を。"
                 center
                 dark
+                jaCompact
               />
               <p className="mx-auto mt-8 max-w-xl text-[13px] font-light leading-loose tracking-wide text-white/70">
                 ご予約・体験のお申し込み・ご質問は、公式LINE・Instagram の DM・

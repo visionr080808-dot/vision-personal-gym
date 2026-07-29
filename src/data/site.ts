@@ -121,34 +121,48 @@ type PriceGroup = {
   name: string;
   en: string;
   note: string;
+  disclaimer?: string;
   for: string[];
   totalLabel: string;
   plans: Plan[];
 };
 export const priceGroups: PriceGroup[] = [
   {
-    name: "回数券",
+    name: "パーソナルトレーニング60分 回数券",
     en: "TICKET",
-    note: "60分",
+    note: "",
     for: ["自分のペースで通いたい方", "まずは気軽に始めたい方"],
     totalLabel: "合計",
     plans: [
-      { name: "1回", per: "7,000", total: "7,000" },
-      { name: "4回", per: "6,750", total: "27,000" },
-      { name: "8回", per: "6,500", total: "52,000" },
-      { name: "16回", per: "6,250", total: "84,000" },
-      { name: "24回", per: "6,000", total: "144,000" },
+      { name: "5回券", per: "6,600", total: "33,000" },
+      { name: "10回券", per: "6,400", total: "64,000" },
+      { name: "20回券", per: "6,200", total: "124,000" },
+      { name: "30回券", per: "6,000", total: "180,000" },
     ],
   },
   {
-    name: "セミパーソナル",
+    name: "セミパーソナル60分 回数券",
     en: "SEMI-PERSONAL",
-    note: "",
+    note: "２人まで",
+    disclaimer: "※1人様あたりの料金（税込）です。",
     for: ["ご家族・ご友人と一緒に通いたい方"],
     totalLabel: "合計",
     plans: [
-      { name: "4回", per: "4,500", total: "18,000" },
-      { name: "8回", per: "4,350", total: "35,000" }, // ※戸田さん原文ママ（35,000÷8=4,375のため要確認）
+      { name: "1回券", per: "4,500", total: "4,500" },
+      { name: "5回券", per: "4,300", total: "21,500" },
+      { name: "10回券", per: "4,000", total: "40,000" },
+    ],
+  },
+  {
+    name: "コンディショニングストレッチ 30分",
+    en: "STRETCH",
+    note: "",
+    for: [],
+    totalLabel: "合計",
+    plans: [
+      { name: "1回券", per: "4,000", total: "4,000" },
+      { name: "5回券", per: "3,600", total: "18,000" },
+      { name: "10回券", per: "3,300", total: "33,000" },
     ],
   },
 ];
