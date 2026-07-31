@@ -478,7 +478,7 @@ export default function Home() {
                 <iframe
                   title={`${site.fullName} 地図`}
                   src={`https://www.google.com/maps?q=${encodeURIComponent(
-                    site.area
+                    `${site.fullName} ${site.area}`
                   )}&output=embed`}
                   className="h-full w-full"
                   loading="lazy"
