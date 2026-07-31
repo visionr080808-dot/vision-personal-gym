@@ -15,8 +15,8 @@ export const site = {
   tel: "080-2889-8819",
   telLink: "08028898819",
   email: "info@pt-vision.com", // 2026-07-24 正式ドメイン確定に伴い変更（Google Workspace設定完了後に有効化）
-  instagram: "https://www.instagram.com/yu_fitness_jp",
-  instagramHandle: "@yu_fitness_jp",
+  instagram: "https://www.instagram.com/gym.vision.888",
+  instagramHandle: "@gym.vision.888",
   line: "https://lin.ee/VB6XkDR", // 公式LINE（2026-07-23 追加）
   hours: "完全予約制（営業時間はご予約時に調整）",
   format: "完全マンツーマン / 1日数枠限定",
