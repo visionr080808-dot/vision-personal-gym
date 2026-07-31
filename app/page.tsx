@@ -217,8 +217,8 @@ export default function Home() {
             </Reveal>
             <div className="mt-16 grid grid-cols-1 border-t border-line sm:grid-cols-2 lg:grid-cols-5">
               {menus.map((m, i) => (
-                <Reveal key={m.title} delay={i * 0.06} className="h-full">
-                  <div className="group flex h-full flex-col border-b border-line py-7 lg:border-r lg:py-10 lg:pr-6 lg:last:border-r-0">
+                <Reveal key={m.title} delay={i * 0.06} className="h-full min-w-0">
+                  <div className="group flex h-full min-w-0 flex-col border-b border-line py-7 lg:border-r lg:py-10 lg:pr-6 lg:last:border-r-0">
                     <div className="flex items-baseline gap-4 lg:flex-col lg:items-start lg:gap-3">
                       <span className="display-en text-xs tracking-[0.2em] text-text/30 transition-colors group-hover:text-text/60">
                         0{i + 1}
@@ -227,7 +227,7 @@ export default function Home() {
                         {m.title}
                       </h3>
                     </div>
-                    <p className="mt-3 break-keep text-[12.5px] font-light leading-relaxed text-text/55 lg:mt-4">
+                    <p className="mt-3 min-w-0 break-keep break-words text-[12.5px] font-light leading-relaxed text-text/55 lg:mt-4">
                       {m.body}
                     </p>
                   </div>
