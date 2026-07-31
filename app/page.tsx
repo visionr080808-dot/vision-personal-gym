@@ -222,7 +222,7 @@ export default function Home() {
                     <span className="display-en text-xs tracking-[0.2em] text-text/30 transition-colors group-hover:text-text/60">
                       0{i + 1}
                     </span>
-                    <h3 className="heading-ja text-[15px] lg:text-base">
+                    <h3 className="heading-ja whitespace-nowrap text-[15px] lg:text-[14px]">
                       {m}
                     </h3>
                   </div>
