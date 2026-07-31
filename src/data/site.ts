@@ -134,6 +134,7 @@ export const priceGroups: PriceGroup[] = [
     for: ["自分のペースで通いたい方", "まずは気軽に始めたい方"],
     totalLabel: "合計",
     plans: [
+      { name: "1回券", per: "7,000", total: "7,000" },
       { name: "5回券", per: "6,600", total: "33,000" },
       { name: "10回券", per: "6,400", total: "64,000" },
       { name: "20回券", per: "6,200", total: "124,000" },
