@@ -43,14 +43,20 @@ export const microCmsConfigured = Boolean(SERVICE_DOMAIN && API_KEY);
 async function fetchList<T>(endpoint: string): Promise<T[]> {
   if (!microCmsConfigured) return [];
 
-  const res = await fetch(
-    `https://${SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}?limit=100&orders=-publishedAt`,
-    { headers: { "X-MICROCMS-API-KEY": API_KEY as string } }
-  );
-  if (!res.ok) return [];
+  try {
+    const res = await fetch(
+      `https://${SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}?limit=100&orders=-publishedAt`,
+      { headers: { "X-MICROCMS-API-KEY": API_KEY as string } }
+    );
+    if (!res.ok) return [];
 
-  const data: MicroCmsListResponse<T> = await res.json();
-  return data.contents ?? [];
+    const data: MicroCmsListResponse<T> = await res.json();
+    return data.contents ?? [];
+  } catch {
+    // ネットワークエラーや応答異常でページ全体がクラッシュしないよう、
+    // 空配列にフォールバック（呼び出し側は「準備中」表示になる）
+    return [];
+  }
 }
 
 export function fetchResults(): Promise<ResultItem[]> {
@@ -64,13 +70,17 @@ export function fetchAchievements(): Promise<AchievementItem[]> {
 async function fetchOne<T>(endpoint: string, id: string): Promise<T | null> {
   if (!microCmsConfigured) return null;
 
-  const res = await fetch(
-    `https://${SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}/${id}`,
-    { headers: { "X-MICROCMS-API-KEY": API_KEY as string } }
-  );
-  if (!res.ok) return null;
+  try {
+    const res = await fetch(
+      `https://${SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}/${id}`,
+      { headers: { "X-MICROCMS-API-KEY": API_KEY as string } }
+    );
+    if (!res.ok) return null;
 
-  return (await res.json()) as T;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
 }
 
 export function fetchBlogPosts(): Promise<BlogPost[]> {

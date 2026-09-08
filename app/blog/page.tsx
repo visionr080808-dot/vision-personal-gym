@@ -13,7 +13,8 @@ import {
   type BlogPost,
 } from "@/src/lib/microcms";
 
-function excerpt(html: string, length = 80) {
+function excerpt(html: string | undefined | null, length = 80) {
+  if (!html) return "";
   const text = html.replace(/<[^>]*>/g, "");
   return text.length > length ? `${text.slice(0, length)}…` : text;
 }
