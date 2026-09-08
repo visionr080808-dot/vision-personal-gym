@@ -66,6 +66,8 @@ export const trainer = {
   role: "パーソナルトレーナー / ピラティスインストラクター",
   image: "/images/trainer-pose.jpg",
   imageAlt: "トレーナー 戸田有哉",
+  // トップページの大きい写真は2枚を自動で切り替え表示（2026-09-08追加）
+  images: ["/images/trainer-pose.jpg", "/images/trainer-casual.jpg"],
   imageSub: "/images/trainer-smile.jpg",
   imageSubAlt: "トレーナー 戸田有哉（大会にて）",
   tags: [

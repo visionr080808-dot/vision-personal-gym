@@ -20,6 +20,7 @@ import { HeroBackground } from "@/src/components/HeroBackground";
 import { SectionHead } from "@/src/components/SectionHead";
 import { BtnFill, BtnLine } from "@/src/components/Buttons";
 import { ContactForm } from "@/src/components/ContactForm";
+import { PhotoCrossfade } from "@/src/components/PhotoCrossfade";
 import {
   PhoneIcon,
   MailIcon,
@@ -152,12 +153,11 @@ export default function Home() {
             <Reveal className="md:col-span-5">
               <div className="relative mx-auto w-full max-w-sm">
                 <div className="relative aspect-[3/4] overflow-hidden">
-                  <Image
-                    src={trainer.image}
+                  <PhotoCrossfade
+                    images={trainer.images}
                     alt={trainer.imageAlt}
-                    fill
+                    intervalMs={2000}
                     sizes="(max-width: 768px) 100vw, 400px"
-                    className="object-cover"
                   />
                 </div>
                 <div className="absolute -bottom-6 -right-4 aspect-square w-28 overflow-hidden border-[6px] border-white sm:-right-6 sm:w-36">
