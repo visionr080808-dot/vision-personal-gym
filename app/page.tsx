@@ -156,7 +156,7 @@ export default function Home() {
                   <PhotoCrossfade
                     images={trainer.images}
                     alt={trainer.imageAlt}
-                    intervalMs={2000}
+                    intervalMs={3000}
                     sizes="(max-width: 768px) 100vw, 400px"
                   />
                 </div>
