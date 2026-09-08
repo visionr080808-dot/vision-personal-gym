@@ -39,8 +39,8 @@ export function Header() {
           <Image
             src={scrolled ? "/images/logo-black.png" : "/images/logo-white.png"}
             alt={site.fullName}
-            width={50}
-            height={36}
+            width={909}
+            height={841}
             priority
             className="h-9 w-auto"
           />

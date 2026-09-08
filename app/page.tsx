@@ -57,8 +57,8 @@ export default function Home() {
               <Image
                 src="/images/logo-white.png"
                 alt={site.fullName}
-                width={230}
-                height={168}
+                width={909}
+                height={841}
                 priority
                 className="mx-auto h-auto w-36 sm:w-48"
               />
@@ -631,8 +631,8 @@ export default function Home() {
           <Image
             src="/images/logo-black.png"
             alt={site.fullName}
-            width={88}
-            height={64}
+            width={909}
+            height={841}
             className="h-auto w-20"
           />
           <p className="text-[11px] tracking-[0.15em] text-text/50">
