@@ -10,14 +10,7 @@ export function Analytics() {
         src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
         strategy="afterInteractive"
       />
-      <Script id="ga4" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${gaId}');
-        `}
-      </Script>
+      <Script id="ga4" src="/ga4-init.js" data-ga-id={gaId} strategy="afterInteractive" />
     </>
   );
 }
