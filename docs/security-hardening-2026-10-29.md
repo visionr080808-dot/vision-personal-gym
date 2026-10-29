@@ -2,8 +2,10 @@
 
 ## 状態
 
-現在のGitHub main（b514976）を基準にした独立した作業ブランチで修正。
-本番へのデプロイは未実施。CloudflareのVISION用アカウント認証が完了してから公開する。
+2026-10-29、本番公開と確認を完了。GitHub PR #1をmainへマージし、検証済みの静的ファイルだけをCloudflare Pagesへ公開した。
+正式URL：[pt-vision.com](https://pt-vision.com/)
+公開コミット：c131c770b1c7deb5536f70277c6cc050595a0d08（実装コミット1b624ecと同じGitツリー）。
+Productionデプロイ：a279da90-4e80-419d-86b1-b8b945e8ee7c。直前の版：8bb95d2e-9c19-417b-af3d-df8e5812f389。
 既存のローカル未コミット作業（アクセス解析管理画面等75ファイル）は含めていない。
 
 ## 変更内容
@@ -16,7 +18,7 @@
 - ビルド時に各HTMLのインラインスクリプトのSHA-256を計算し、CSPで一致するスクリプトだけを許可。
 - CSPの許可先は既存のGoogle Maps / GA4 / microCMS等に限定。
 - GA4初期化を同一サイトの外部JSへ移動し、任意のインラインJavaScriptを許可せず同じ計測IDを維持。
-- Dependabotの週次更新チェック設定を追加（mainへマージ後に有効）。
+- Dependabotの週次更新チェック設定をmainへ追加。
 - 間接依存も修正し、作業時のnpm audit検出を0件にした。
 
 文章・写真・料金・予約リンク・スタイルシート・レスポンシブ設定は変更していない。
@@ -43,7 +45,16 @@ npm audit
 - サイトマップとrobots.txtはNext.js 16の静的出力要件に合わせforce-staticを指定。
 - ビルド後は必ずout/_headersが存在することを確認。npm run buildが自動生成する。
 
-## 公開前後の確認
+## 本番公開後の確認結果
+
+- トップ・ブログ一覧・個別記事・実績・トレーナー・robots.txt・sitemap.xmlの7パスがHTTP 200。
+- 本番の応答本文が検証済みの公開ファイルと全7パスで一致。主要5ページの文章・リンク・画像は更新前と一致。
+- CSP、X-Frame-Options: DENY、X-Content-Type-Options: nosniffの反映を実際の本番レスポンスで確認。
+- ブログ記事本文の読み込み、Google Mapsの店舗ピン表示、FAQの開閉をブラウザで確認。
+- 従来と同じGA4測定IDによるスクリプト読み込みと、確認画面でブラウザのエラーなしを確認。GA4管理画面での集計確認は対象外。
+- 管理画面の新機能や元フォルダの未コミット作業は公開していない。
+
+## 次回更新時の公開前後の確認
 
 1. 差分レビューとGitHub mainへのマージ。
 2. VISIONのCloudflareアカウントとPagesプロジェクトvision-personal-gymを確認。
@@ -70,8 +81,8 @@ Cloudflare Pagesでは_headersは静的ファイルへのレスポンスに適�
 ただしNext.js自身にも継続的な更新が必要なので、サポート中の修正版へ更新した。
 
 参考：
-- https://www.php.net/archive/2026.php
-- https://nextjs.org/support-policy
-- https://nextjs.org/blog/nextjs-security-update-october-14-2026
-- https://developers.cloudflare.com/pages/configuration/headers/
-- https://document.microcms.io/content-api/x-microcms-api-key
+- [PHP公式](https://www.php.net/archive/2026.php)
+- [Next.jsサポート方針](https://nextjs.org/support-policy)
+- [Next.jsセキュリティ更新](https://nextjs.org/blog/nextjs-security-update-october-14-2026)
+- [Cloudflare Pagesのヘッダー](https://developers.cloudflare.com/pages/configuration/headers/)
+- [microCMSのAPIキー権限](https://document.microcms.io/content-api/x-microcms-api-key)
