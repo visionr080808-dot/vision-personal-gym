@@ -8,6 +8,7 @@ import { MobileCTA } from "@/src/components/MobileCTA";
 import { Reveal } from "@/src/components/Reveal";
 import { BtnFill } from "@/src/components/Buttons";
 import { fetchBlogPost, type BlogPost } from "@/src/lib/microcms";
+import { sanitizeRichHtml } from "@/src/lib/sanitize-html";
 
 function formatDate(iso: string) {
   const d = new Date(iso);
@@ -26,7 +27,13 @@ function BlogPostContent() {
       setPost(null);
       return;
     }
-    fetchBlogPost(id).then(setPost);
+    let active = true;
+    fetchBlogPost(id).then((article) => {
+      if (active) {
+        setPost(article ? { ...article, content: sanitizeRichHtml(article.content ?? "") } : null);
+      }
+    });
+    return () => { active = false; };
   }, [id]);
 
   return (

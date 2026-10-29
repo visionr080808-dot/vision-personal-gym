@@ -5,25 +5,33 @@
   "description": "STUDIO YU — 岡山県苫田郡鏡野町の完全マンツーマン・パーソナルジム公式サイト",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack && node scripts/security-headers.mjs",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint app src",
+    "typecheck": "tsc --noEmit --incremental false",
+    "test:security": "node --test tests/security.test.mjs",
+    "test:headers": "node --test tests/headers.test.mjs"
   },
   "dependencies": {
-    "framer-motion": "^11.3.31",
-    "next": "^14.2.35",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "dompurify": "3.4.17",
+    "framer-motion": "11.18.2",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.16.5",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.35",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.3",
+    "jsdom": "30.1.3",
     "postcss": "^8.4.45",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=24.15.0 <25 || >=26"
   }
 }
